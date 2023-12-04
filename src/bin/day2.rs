@@ -1,6 +1,5 @@
 use aoc_2023::*;
 
-#[allow(unused_variables)]
 fn main() {
     let games = get_input();
 
