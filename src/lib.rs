@@ -9,3 +9,12 @@ pub fn get_input() -> Vec<String> {
 
     buf.lines().map(|i| i.unwrap()).collect()
 }
+
+pub fn hcf(mut a: i128, mut b: i128) -> i128 {
+    while b != 0 {
+        let remainder = a % b;
+        a = b;
+        b = remainder;
+    }
+    a
+}

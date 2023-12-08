@@ -13,14 +13,14 @@ fn main() {
     input.remove(0);
     input.retain(|f| !f.is_empty());
 
-    let mut ranges: Vec<&String> = Vec::new();
+    let mut ranges: Vec<Vec<&String>> = vec![vec![]; input.len()];
 
     for (i, block) in input.iter().enumerate() {
         if block.ends_with(":") {
             let mut index = i + 1;
 
             while !input[index].ends_with(":") {
-                ranges.push(&input[index]);
+                ranges[i].push(&input[index]);
 
                 if index != input.len() - 1 {
                     index += 1;
@@ -32,26 +32,27 @@ fn main() {
     }
 
     ranges.retain(|f| !f.is_empty());
+    // println!("{:?}", seeds);
+    // println!("{:?}", ranges);
 
     let mut answers: Vec<i32> = Vec::new();
-
     for numb in seeds {
         for range in &ranges {
-            let map = range
-                .split_whitespace()
-                .map(|f| f.parse::<i32>().unwrap())
-                .collect::<Vec<i32>>();
+            let maps = range.iter().map(|f| {
+                f.split_whitespace()
+                    .map(|i| i.parse::<i32>().unwrap())
+                    .collect::<Vec<i32>>()
+            }).collect::<Vec<Vec<i32>>>();
 
+            for map in maps {
+                let a = map[0];
+                let b = map[1];
+                let c = map[2];
 
-            let a = map[0];
-            let b = map[1];
-            let c = map[2];
-
-            if numb >= b && numb < b + c {
-                answers.push(a + (numb - b));
-                break;
-            } else {
-                answers.push(numb);
+                if b <= numb && numb < b + c {
+                    answers.push(numb - b + a);
+                    break;
+                } 
             }
         }
     }
